@@ -1,0 +1,1 @@
+import{t as e}from"./react-D-A1o3vD.js";import{a as t}from"./antd-SF7zD1JE.js";var n=e();function r({page:e,pageCount:r,onChange:i}){return r<=1?null:(0,n.jsx)(`div`,{className:`catalog-pager`,children:(0,n.jsx)(t,{current:e,pageSize:1,total:r,showSizeChanger:!1,onChange:i})})}export{r as t};
