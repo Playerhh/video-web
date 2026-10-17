@@ -22,11 +22,9 @@ function LazyPage({ page: Page }) {
   );
 }
 
-const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '')
-
 function App() {
   return (
-    <BrowserRouter basename={routerBasename}>
+    <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
