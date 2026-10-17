@@ -1,0 +1,29 @@
+.error-card {
+    margin: 16px auto;
+    max-width: 800px;
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #991b1b;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.retry-btn {
+    border: 1px solid #fca5a5;
+    background: #fff;
+    color: #991b1b;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+}
+
+.retry-btn:hover {
+    background: #fff1f2;
+}

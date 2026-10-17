@@ -1,0 +1,7 @@
+:root {
+    font-size: 16px;
+    /* 与 src/constants/breakpoints.js 相同：手机小于 768，平板到 1023，桌面从 1024 起 */
+    --bp-tablet: 768px;
+    --bp-desktop: 1024px;
+}
+body { margin: 0; padding: 0; }

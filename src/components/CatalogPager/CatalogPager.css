@@ -1,0 +1,13 @@
+.catalog-pager {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.catalog-pager .ant-pagination-item,
+.catalog-pager .ant-pagination-prev,
+.catalog-pager .ant-pagination-next {
+    min-width: 44px;
+    height: 44px;
+    line-height: 42px;
+}

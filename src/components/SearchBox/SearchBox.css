@@ -1,0 +1,86 @@
+.search-box {
+    display: flex;
+    width: 100%;
+    max-width: 760px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    align-items: center;
+    margin: 14px 0 16px;
+    padding: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .05);
+}
+
+.search-input {
+    flex: 1;
+    border: 0;
+    outline: none;
+    font-size: 0.95rem;
+    min-height: 40px;
+    padding: 8px 10px;
+}
+
+.search-input:focus {
+    border-color: #2563eb;
+}
+
+.search-btn {
+    margin-left: 8px;
+    border: 0;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    padding: 9px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.search-btn:hover {
+    background: #1d4ed8;
+}
+
+/* 搜索历史样式 */
+.search-container {
+    width: 100%;
+    max-width: 760px;
+}
+.search-history {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+.clear-history-btn {
+    border: none;
+    background: transparent;
+    color: #2563eb;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+.history-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.history-tag {
+    padding: 4px 8px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: #111827;
+    cursor: pointer;
+}
+.history-tag:hover {
+    background: #e5e7eb;
+}

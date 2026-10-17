@@ -1,0 +1,129 @@
+.app-shell {
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+    color: #111827;
+}
+
+.app-header {
+    background: #111827;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.brand-title {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    min-width: 0;
+}
+
+.nav-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.drawer-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.nav-link {
+    color: #d1d5db;
+    text-decoration: none;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.88rem;
+}
+
+.drawer-nav .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 14px;
+    color: #111827;
+    border-color: #d1d5db;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    border-color: #fff;
+    color: #fff;
+}
+
+.drawer-nav .nav-link:hover,
+.drawer-nav .nav-link.active {
+    border-color: #111827;
+    color: #111827;
+}
+
+button.nav-link {
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+}
+
+.nav-user {
+    color: #fff;
+    font-size: 0.88rem;
+    padding: 6px 2px;
+}
+
+.drawer-nav .nav-user {
+    color: #111827;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.app-content {
+    width: min(1100px, 94%);
+    margin: 16px auto;
+    flex: 1;
+    min-width: 0;
+}
+
+.app-footer {
+    color: #6b7280;
+    font-size: 0.82rem;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+    padding: 10px 6px;
+    margin-top: 16px;
+}
+
+@media (width < 768px) {
+    .app-content {
+        width: 96%;
+        margin-top: 12px;
+    }
+}

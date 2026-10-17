@@ -1,0 +1,30 @@
+.media-card {
+    position: relative;
+}
+
+.media-card-link {
+    display: block;
+    color: inherit;
+}
+
+.fav-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #111827;
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.fav-btn.collected {
+    color: #be123c;
+}

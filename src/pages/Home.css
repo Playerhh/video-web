@@ -1,0 +1,40 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-head {
+    margin: 14px 0 8px;
+    text-align: left;
+}
+
+.home-head h1 {
+    margin: 0;
+    font-size: 1.45rem;
+    color: #111827;
+}
+
+.home-head p {
+    margin: 4px 0 0;
+    color: #4b5563;
+}
+
+.home-entries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.home-entry {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #111827;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+}
+
+.home-entry:hover {
+    border-color: #111827;
+}
