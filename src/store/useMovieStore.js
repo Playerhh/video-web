@@ -9,7 +9,8 @@ import { notifyOnce } from '../sync/notify';
 import { getSyncUser } from '../sync/session';
 import { normalizeShow, sameItem } from '../utils/show';
 
-const STORAGE_KEY = 'collectMovies';
+const MIXED_KEY = 'collectMovies';
+const GUEST_KEY = 'collectMoviesGuest';
 const LEGACY_KEY = 'collectMovieIds';
 
 function readJson(key) {
@@ -32,6 +33,28 @@ function writeJson(key, value) {
 }
 
 let initPromise = null;
+
+function normalizeSaved(list) {
+    if (!Array.isArray(list)) return [];
+    return list
+        .map((item) => normalizeShow({
+            ...item,
+            source: item?.source === 'tmdb' ? 'tmdb' : 'tvmaze',
+        }))
+        .filter(Boolean);
+}
+
+function readCollects(key) {
+    return normalizeSaved(readJson(key));
+}
+
+function dropMixedKey() {
+    try {
+        localStorage.removeItem(MIXED_KEY);
+    } catch {
+        // 旧的混合收藏删不掉时，后面也不再读取它
+    }
+}
 
 async function migrateLegacy(ids) {
     const snapshots = [];
@@ -59,21 +82,23 @@ const useMovieStore = create((set, get) => ({
     initCollects: () => {
         if (!initPromise) {
             initPromise = (async () => {
-                const saved = readJson(STORAGE_KEY);
+                dropMixedKey();
+                const saved = readJson(GUEST_KEY);
                 if (Array.isArray(saved)) {
-                    set({
-                        collects: saved.map((item) => normalizeShow({ ...item, source: item?.source === 'tmdb' ? 'tmdb' : 'tvmaze' })).filter(Boolean),
-                    });
+                    if (!getSyncUser()) set({ collects: normalizeSaved(saved) });
                     return;
                 }
 
                 const legacy = readJson(LEGACY_KEY);
-                if (!Array.isArray(legacy) || legacy.length === 0) return;
+                if (!Array.isArray(legacy) || legacy.length === 0) {
+                    if (!getSyncUser()) set({ collects: [] });
+                    return;
+                }
 
                 const ids = [...new Set(legacy.map(Number).filter((id) => Number.isInteger(id) && id > 0))];
                 const snapshots = await migrateLegacy(ids);
-                set({ collects: snapshots });
-                const savedOk = writeJson(STORAGE_KEY, snapshots);
+                if (!getSyncUser()) set({ collects: snapshots });
+                const savedOk = writeJson(GUEST_KEY, snapshots);
                 if (savedOk) {
                     try {
                         localStorage.removeItem(LEGACY_KEY);
@@ -88,11 +113,13 @@ const useMovieStore = create((set, get) => ({
         return initPromise;
     },
 
+    showGuestCollects: () => {
+        dropMixedKey();
+        set({ collects: readCollects(GUEST_KEY), storageWarning: '' });
+    },
+
     replaceCollects: (collects) => {
         set({ collects, storageWarning: '' });
-        if (!writeJson(STORAGE_KEY, collects)) {
-            set({ storageWarning: '收藏已更新，但浏览器空间不足，刷新后可能丢失' });
-        }
     },
 
     toggleCollect: (show) => {
@@ -104,15 +131,16 @@ const useMovieStore = create((set, get) => ({
             ? get().collects.filter((item) => !sameItem(item, snapshot))
             : [nextSnapshot, ...get().collects];
         set({ collects: next, storageWarning: '' });
-        if (!writeJson(STORAGE_KEY, next)) {
-            set({ storageWarning: '收藏已更新，但浏览器空间不足，刷新后可能丢失' });
+        if (!getSyncUser()) {
+            if (!writeJson(GUEST_KEY, next)) {
+                set({ storageWarning: '收藏已更新，但浏览器空间不足，刷新后可能丢失' });
+            }
             return;
         }
-        if (!getSyncUser()) return;
         const task = removed
             ? removeFavorite(snapshot.source, snapshot.id)
             : saveFavorite(nextSnapshot);
-        task.catch(() => notifyOnce('收藏已保存在这台浏览器，账号同步暂时失败'));
+        task.catch(() => notifyOnce('收藏没有同步到账号，刷新后会按账号里的记录显示'));
     },
 
     isCollected: (item) => get().collects.some((saved) => sameItem(saved, item)),
@@ -120,7 +148,8 @@ const useMovieStore = create((set, get) => ({
     clearCollects: () => {
         set({ collects: [], storageWarning: '' });
         try {
-            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(GUEST_KEY);
+            localStorage.removeItem(MIXED_KEY);
         } catch {
             // 内存中的收藏已经清空
         }

@@ -12,6 +12,7 @@ import { bindNotice } from '../../sync/notify';
 import useAuthStore from '../../store/useAuthStore';
 import useMovieStore from '../../store/useMovieStore';
 import ErrorMessage from '../ErrorMessage';
+import LoginPrompt from '../LoginPrompt';
 import './Layout.css';
 
 const NAV_LINKS = [
@@ -30,7 +31,6 @@ export default function Layout() {
     const initCollects = useMovieStore((state) => state.initCollects);
     const storageWarning = useMovieStore((state) => state.storageWarning);
     const user = useAuthStore((state) => state.user);
-    const syncWarning = useAuthStore((state) => state.syncWarning);
     const logout = useAuthStore((state) => state.logout);
     const { message } = AntdApp.useApp();
     const screens = Grid.useBreakpoint();
@@ -134,9 +134,9 @@ export default function Layout() {
                     </nav>
                 </Drawer>
             )}
+            <LoginPrompt />
             <main className="app-content">
                 {storageWarning && <ErrorMessage message={storageWarning} />}
-                {syncWarning && <ErrorMessage message={syncWarning} />}
                 <Outlet />
             </main>
             <footer className="app-footer">

@@ -20,7 +20,7 @@ let initPromise = null;
 const useAuthStore = create((set, get) => ({
     user: null,
     ready: false,
-    syncWarning: '',
+    loginPrompt: false,
 
     init: () => {
         if (!initPromise) {
@@ -28,16 +28,14 @@ const useAuthStore = create((set, get) => ({
                 try {
                     const data = await fetchMe();
                     setSyncUser(data.user);
-                    set({ user: data.user, ready: true, syncWarning: '' });
+                    set({ user: data.user, ready: true, loginPrompt: false });
                     await get().syncAccount();
                 } catch (error) {
                     setSyncUser(null);
                     set({
                         user: null,
                         ready: true,
-                        syncWarning: error?.code === 'ACCOUNT_GUEST' || error?.code === 'ACCOUNT_OFFLINE'
-                            ? ''
-                            : '账号状态读取失败',
+                        loginPrompt: error?.code === 'ACCOUNT_GUEST',
                     });
                 }
             })();
@@ -59,7 +57,7 @@ const useAuthStore = create((set, get) => ({
                 ...favoritesToUpload(mergedFavorites, remoteFavorites).map((item) => saveFavorite(item)),
                 ...progressToUpload(mergedProgress, remoteProgress).map((item) => saveProgress(item)),
             ]);
-            set({ syncWarning: '' });
+            set({ loginPrompt: false });
         } catch {
             notifyOnce('账号同步暂时失败，本机记录仍然保留');
         }
@@ -70,7 +68,7 @@ const useAuthStore = create((set, get) => ({
             ? await registerAccount(username, password)
             : await loginAccount(username, password);
         setSyncUser(data.user);
-        set({ user: data.user, ready: true, syncWarning: '' });
+        set({ user: data.user, ready: true, loginPrompt: false });
         await get().syncAccount();
     },
 
@@ -78,11 +76,14 @@ const useAuthStore = create((set, get) => ({
         try {
             await logoutAccount();
         } catch {
-            // 服务器没开时仍退出本页登录态，本地收藏和进度保留
+            // 服务器没开时仍退出本页登录态，收藏改回未登录时的记录
         }
         setSyncUser(null);
-        set({ user: null, syncWarning: '' });
+        useMovieStore.getState().showGuestCollects();
+        set({ user: null, loginPrompt: true });
     },
+
+    dismissLoginPrompt: () => set({ loginPrompt: false }),
 }));
 
 export default useAuthStore;

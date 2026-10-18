@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Button from 'antd/es/button';
 import Form from 'antd/es/form';
 import Input from 'antd/es/input';
-import PageStatus from '../components/PageStatus';
+import LoginPending from '../components/LoginPending';
 import useAuthStore from '../store/useAuthStore';
 import './Login.css';
 
@@ -17,7 +17,7 @@ export default function Login() {
     const [mode, setMode] = useState('login');
     const [pending, setPending] = useState(false);
 
-    if (!ready) return <PageStatus status="loading" message="正在确认登录状态..." />;
+    if (!ready) return <LoginPending />;
     if (user) return <Navigate to="/favorites" replace />;
 
     const handleSubmit = async (values) => {
